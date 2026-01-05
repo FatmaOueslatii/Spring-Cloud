@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 //@FeignClient(url = "http://localhost:8080" , value = "DEPARTMENT")
+//circuit braker au niv microservice teacher
+//@FeignClient(name= "DEPARTMENT",fallback = DeptFallback.class)
 @FeignClient(name= "DEPARTMENT")
 public interface APIClient {
 

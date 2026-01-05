@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class TeacherServiceImpl implements TeacherService
 {
+
     private TeacherRepository teacherRepository;
 //  private WebClient webClient;
     private APIClient apiClient;
@@ -31,12 +32,17 @@ public class TeacherServiceImpl implements TeacherService
 
         //La méthode de communication entre 2 microservices avec la méthode OpenFeign
         DepartmentDto departmentDto = apiClient.getDepByCode(teacher.getDepCode());
+        String dname;
+        if(departmentDto == null)
+            dname = "Department Not Found";
+            else
+            dname = departmentDto.getDepName();
 
         TeacherDto teacherDto = new TeacherDto(teacher.getId(),
                 teacher.getFirstName(),
                 teacher.getLastName(),
                 teacher.getDepCode(),
-                departmentDto.getDepName());
+                dname);
 
         APIResponseDto apiResponseDto = new APIResponseDto();
         apiResponseDto.setTeacherDto(teacherDto);

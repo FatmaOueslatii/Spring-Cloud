@@ -2,12 +2,27 @@ spring:
   application:
     name: "configserver"
   profiles:
-    active: native
+#    active: native
+    active: git
   cloud:
     config:
       server:
-        native:
+        # native:
           # search-locations: "classpath:/config"
-          search-locations: "file:///C:/Users/Asus/IdeaProjects/spring_cloud/config-repo"
+          # search-locations: "file:///C:/Users/Asus/IdeaProjects/spring_cloud/config-repo"
+        git:
+          uri: https://github.com/FatmaOueslatii/config-repo.git
+          default-label: main
+          clone-on-start: true
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: "guest"
+    password: "guest"
 server:
   port: 9999
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

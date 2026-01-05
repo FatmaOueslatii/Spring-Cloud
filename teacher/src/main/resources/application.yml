@@ -3,6 +3,10 @@ server:
 spring:
   application:
     name: teacher
+  profiles:
+    active: default
+  config:
+    import: optional:configserver:${CONFIG_SERVICE_URL:http://localhost:9999}
   datasource:
     url: 'jdbc:h2:mem:teacherdb'
   h2:
@@ -14,24 +18,42 @@ spring:
       ddl-auto: update
   cloud:
     config:
-      enabled: false
+      enabled: true
     discovery:
       enabled: true
     gateway:
       discovery:
         locator:
           enabled: true
+    openfeign:
+      circuitbreaker:
+        enabled: true
+#  rabbitmq:
+#      host: localhost
+#      port: 5672
+#      username: "guest"
+#      password: "guest"
 
-  eureka:
-    client:
-      serviceUrl:
-        defaultZone: 'http://localhost:8761/eureka/'
+eureka:
+  client:
+    service-url:
+      defaultZone: ${DISCOVERY_SERVICE_URL:http://localhost:8761/eureka}
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+    hostname: localhost
 
 management:
   endpoints:
     web:
       exposure:
         include: '*'
-eureka:
-  instance:
-    prefer-ip-address: true
+#conf de resilience4j
+#resilience4j.circuitbreaker:
+#  configs:
+#    default:
+#      slidingWindowSize: 10
+#      permittedNumberOfCallsInHalfOpenState: 2
+#      failureRateThreshold: 50
+#      waitDurationInOpenState: 10000
